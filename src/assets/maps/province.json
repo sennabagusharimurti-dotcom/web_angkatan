@@ -1,0 +1,172 @@
+{
+  "IDAC": {
+    "province": "Aceh",
+    "totalMahasiswa": 28,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDBA": {
+    "province": "Bali",
+    "totalMahasiswa": 33,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDBB": {
+    "province": "Bangka Belitung",
+    "totalMahasiswa": 21,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDBE": {
+    "province": "Bengkulu",
+    "totalMahasiswa": 19,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDBT": {
+    "province": "Banten",
+    "totalMahasiswa": 52,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDGO": {
+    "province": "Gorontalo",
+    "totalMahasiswa": 24,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDJA": {
+    "province": "Jambi",
+    "totalMahasiswa": 27,
+    "fillClassName": "fill-yellow-cs-40"
+  },
+  "IDJB": {
+    "province": "Jawa Barat",
+    "totalMahasiswa": 68,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDJI": {
+    "province": "Jawa Timur",
+    "totalMahasiswa": 47,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDJK": {
+    "province": "DKI Jakarta",
+    "totalMahasiswa": 74,
+    "fillClassName": "fill-neutral-cs-40"
+  },
+  "IDJT": {
+    "province": "Jawa Tengah",
+    "totalMahasiswa": 61,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDKB": {
+    "province": "Kalimantan Barat",
+    "totalMahasiswa": 36,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDKI": {
+    "province": "Kalimantan Timur",
+    "totalMahasiswa": 31,
+    "fillClassName": "fill-neutral-cs-40"
+  },
+  "IDKR": {
+    "province": "Kepulauan Riau",
+    "totalMahasiswa": 26,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDKS": {
+    "province": "Kalimantan Selatan",
+    "totalMahasiswa": 35,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDKT": {
+    "province": "Kalimantan Tengah",
+    "totalMahasiswa": 29,
+    "fillClassName": "fill-yellow-cs-40"
+  },
+  "IDKU": {
+    "province": "Kalimantan Utara",
+    "totalMahasiswa": 22,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDLA": {
+    "province": "Lampung",
+    "totalMahasiswa": 34,
+    "fillClassName": "fill-yellow-cs-40"
+  },
+  "IDMA": {
+    "province": "Maluku",
+    "totalMahasiswa": 20,
+    "fillClassName": "fill-neutral-cs-40"
+  },
+  "IDMU": {
+    "province": "Maluku Utara",
+    "totalMahasiswa": 18,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDNB": {
+    "province": "Nusa Tenggara Barat",
+    "totalMahasiswa": 32,
+    "fillClassName": "fill-yellow-cs-40"
+  },
+  "IDNT": {
+    "province": "Nusa Tenggara Timur",
+    "totalMahasiswa": 25,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDPA": {
+    "province": "Papua",
+    "totalMahasiswa": 30,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDPB": {
+    "province": "Papua Barat",
+    "totalMahasiswa": 23,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDRI": {
+    "province": "Riau",
+    "totalMahasiswa": 39,
+    "fillClassName": "fill-blue-cs-30"
+  },
+  "IDSA": {
+    "province": "Sulawesi Utara",
+    "totalMahasiswa": 28,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDSB": {
+    "province": "Sumatera Barat",
+    "totalMahasiswa": 37,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDSG": {
+    "province": "Sulawesi Tenggara",
+    "totalMahasiswa": 26,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDSN": {
+    "province": "Sulawesi Selatan",
+    "totalMahasiswa": 41,
+    "fillClassName": "fill-neutral-cs-40"
+  },
+  "IDSR": {
+    "province": "Sulawesi Barat",
+    "totalMahasiswa": 19,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDSS": {
+    "province": "Sumatera Selatan",
+    "totalMahasiswa": 43,
+    "fillClassName": "fill-blue-cs-20"
+  },
+  "IDST": {
+    "province": "Sulawesi Tengah",
+    "totalMahasiswa": 27,
+    "fillClassName": "fill-neutral-cs-40"
+  },
+  "IDSU": {
+    "province": "Sumatera Utara",
+    "totalMahasiswa": 55,
+    "fillClassName": "fill-yellow-cs-40"
+  },
+  "IDYO": {
+    "province": "DI Yogyakarta",
+    "totalMahasiswa": 38,
+    "fillClassName": "fill-blue-cs-20"
+  }
+}

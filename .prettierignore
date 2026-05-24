@@ -1,0 +1,13 @@
+.next
+.cache
+public
+node_modules
+next-env.d.ts
+next.config.ts
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+package.json
+.prettierrc
+.prettierignore
+postcss.config.js

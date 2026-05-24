@@ -1,7 +1,16 @@
+
+import AboutUs from '@/components/organisms/homepage/AboutUs'
+import Hero from '@/components/organisms/homepage/Hero'
+import Map from '@/components/organisms/homepage/Map'
+import Moments from '@/components/organisms/homepage/Moments'
+
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      Teknologi Informasi ITS 2025
-    </div>
-  );
+    <>
+      <Hero />
+      <AboutUs />
+      <Moments />
+      <Map />
+    </>
+  )
 }
