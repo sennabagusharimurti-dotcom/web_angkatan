@@ -78,8 +78,8 @@ const Moments = () => {
   }, [activePhoto])
 
   return (
-    <section className="bg-blue-cs-40 min-h-screen w-full">
-      <div className="blob !bg-yellow-cs-30 min-h-screen w-full overflow-hidden rounded-t-[12rem] shadow-[inset_0px_10px_4px_7px_#00000059] sm:rounded-t-[25rem]">
+    <section className="bg-blue-cs-40 min-h-screen w-full overflow-x-clip">
+      <div className="blob !bg-yellow-cs-30 relative left-1/2 min-h-screen w-[116%] -translate-x-1/2 overflow-hidden rounded-t-[12rem] shadow-[inset_0px_10px_4px_7px_#00000059] sm:w-[108%] sm:rounded-t-[25rem] lg:left-0 lg:w-full lg:translate-x-0">
         <h2
           className="font-rubikone text-blue-cs-30 pt-16 text-center text-[32px] leading-[40px] sm:text-[40px] sm:leading-[52px] lg:text-[56px] lg:leading-[70px]"
           style={getTextStrokeStyle({ color: '#ffffff', width: 2 })}
