@@ -65,7 +65,7 @@ const MapInteractive = ({ provinces, svgWidth, svgHeight }: MapInteractiveProps)
                 top: `${(hoveredProvince.centerY / svgHeight) * 100}%`
               }}
             >
-              <div className="bg-neutral-cs-10 relative w-48 rounded-2xl px-6 py-3 text-center shadow-lg">
+              <div className="bg-neutral-cs-10 text-neutral-cs-100 relative w-48 rounded-2xl px-6 py-3 text-center shadow-lg">
                 <p className="font-semibold">{hoveredProvince.province}</p>
                 <div className="mt-1 flex items-center justify-center gap-2">
                   <p className="text-yellow-cs-40 font-rubikone text-2xl leading-none">
