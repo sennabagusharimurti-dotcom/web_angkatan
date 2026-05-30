@@ -8,12 +8,12 @@ const AboutUs = () => {
   return (
     <section id="about-us" className="bg-blue-cs-40 text-neutral-cs-10 w-full">
       <div className="mx-auto flex w-full max-w-[1260px] flex-col items-center gap-8 px-6 py-16 text-center sm:px-10 lg:px-[90px] lg:py-[110px]">
-        <div className="relative flex w-full items-center justify-center">
+        <div className="relative flex min-h-[104px] w-full items-start justify-center overflow-hidden pt-2 sm:min-h-0 sm:items-center sm:overflow-visible sm:pt-0">
           <Image
             src={cloudIcon}
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute top-4 right-[calc(50%+62px)] bottom-[-6px] z-10 h-auto w-[216px] max-w-none scale-x-[-1] -rotate-12 sm:hidden"
+            className="pointer-events-none absolute top-[42px] right-[calc(50%+28px)] z-0 h-auto w-[38vw] min-w-[112px] max-w-[172px] scale-x-[-1] -rotate-12 sm:hidden"
           />
           <h2
             className="font-rubikone text-blue-cs-30 relative z-10 text-[32px] leading-[40px] sm:text-[40px] sm:leading-[52px] lg:text-[56px] lg:leading-[70px]"
@@ -25,11 +25,11 @@ const AboutUs = () => {
             src={cloudIcon}
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute top-4 bottom-[-6px] left-[calc(50%+62px)] z-0 h-auto w-[216px] max-w-none rotate-12 sm:hidden"
+            className="pointer-events-none absolute top-[42px] left-[calc(50%+28px)] z-0 h-auto w-[38vw] min-w-[112px] max-w-[172px] rotate-12 sm:hidden"
           />
         </div>
 
-        <div className="relative w-full max-w-[1040px] overflow-visible">
+        <div className="relative w-full max-w-[1040px] overflow-hidden">
           <Image
             src={cloudIcon}
             alt=""

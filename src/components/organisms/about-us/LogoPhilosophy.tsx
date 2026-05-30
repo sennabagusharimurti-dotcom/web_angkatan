@@ -1,13 +1,14 @@
 'use client'
 import React, { useState } from 'react'
-import Image from 'next/image'
-import LogoArusKeAtas from '@/assets/images/about-us/arusAtas.png'
 
+import Image from 'next/image'
+
+import LogoArusKeAtas from '@/assets/images/about-us/arusAtas.png'
 import LogoArusKeBawah from '@/assets/images/about-us/arusBawah.png'
+import LogoBintang from '@/assets/images/about-us/bintang.png'
 import LogoDuaArus from '@/assets/images/about-us/duaArus.png'
 import LogoGradient from '@/assets/images/about-us/full.png'
 import LogoTitik from '@/assets/images/about-us/titik.png'
-import LogoBintang from '@/assets/images/about-us/bintang.png'
 
 const philosophyData = [
   {
@@ -16,9 +17,9 @@ const philosophyData = [
     image: LogoBintang,
     description: (
       <p>
-        Perlambangan dari <span className="text-yellow-cs-30 font-semibold">Astra</span>, sebagai bentuk dari{' '}
-        <span className="text-yellow-cs-30 font-semibold">harapan</span> dan{' '}
-        <span className="text-yellow-cs-30 font-semibold">tujuan</span>, serta cita-cita bersama yang ingin kami capai.
+        Perlambangan dari <span className="text-yellow-cs-30">Astra</span>, sebagai bentuk dari{' '}
+        <span className="text-yellow-cs-30">harapan</span> dan <span className="text-yellow-cs-30">tujuan</span>, serta
+        cita-cita bersama yang ingin kami capai.
       </p>
     )
   },
@@ -28,10 +29,9 @@ const philosophyData = [
     image: LogoArusKeAtas,
     description: (
       <p>
-        Melambangkan proses <span className="text-yellow-cs-30 font-semibold">perkembangan karakter</span> dan{' '}
-        <span className="text-yellow-cs-30 font-semibold">kompetensi</span> untuk mencapai{' '}
-        <span className="text-yellow-cs-30 font-semibold">bintang</span>{' '}
-        <span className="text-yellow-cs-30 font-semibold">(tujuan)</span>
+        Melambangkan proses <span className="text-yellow-cs-30">perkembangan karakter</span> dan{' '}
+        <span className="text-yellow-cs-30">kompetensi</span> untuk mencapai{' '}
+        <span className="text-yellow-cs-30">bintang</span> <span className="text-yellow-cs-30">(tujuan)</span>
       </p>
     )
   },
@@ -41,9 +41,9 @@ const philosophyData = [
     image: LogoTitik,
     description: (
       <p>
-        Simbol dari <span className="text-yellow-cs-30 font-semibold">Titik Awal</span>, menggambarkan bahwa tiap
-        individu memiliki <span className="text-yellow-cs-30 font-semibold">potensi</span> serta mimpi yang menjadi awal{' '}
-        <span className="text-yellow-cs-30 font-semibold">perjalanan</span>
+        Simbol dari <span className="text-yellow-cs-30">Titik Awal</span>, menggambarkan bahwa tiap individu memiliki{' '}
+        <span className="text-yellow-cs-30">potensi</span> serta mimpi yang menjadi awal{' '}
+        <span className="text-yellow-cs-30">perjalanan</span>
       </p>
     )
   },
@@ -53,9 +53,9 @@ const philosophyData = [
     image: LogoArusKeBawah,
     description: (
       <p>
-        menyimbolkan <span className="text-yellow-cs-30 font-semibold">kepedulian</span> dan{' '}
-        <span className="text-yellow-cs-30 font-semibold">saling merangkul</span> untuk menciptakan lingkungan yang{' '}
-        <span className="text-yellow-cs-30 font-semibold">inklusif</span>
+        menyimbolkan <span className="text-yellow-cs-30">kepedulian</span> dan{' '}
+        <span className="text-yellow-cs-30">saling merangkul</span> untuk menciptakan lingkungan yang{' '}
+        <span className="text-yellow-cs-30">inklusif</span>
       </p>
     )
   },
@@ -65,8 +65,8 @@ const philosophyData = [
     image: LogoDuaArus,
     description: (
       <p>
-        Melambangkan <span className="text-yellow-cs-30 font-extrabold">kolaborasi</span> antar Individu baik secara
-        internal atau eksternal dalam upaya <span className="text-yellow-cs-30 font-extrabold">berkembang bersama</span>
+        Melambangkan <span className="text-yellow-cs-30">kolaborasi</span> antar Individu baik secara internal atau
+        eksternal dalam upaya <span className="text-yellow-cs-30">berkembang bersama</span>
       </p>
     )
   },
@@ -76,8 +76,8 @@ const philosophyData = [
     image: LogoDuaArus,
     description: (
       <p>
-        Bentuk menyerupai huruf <span className="text-yellow-cs-30 font-extrabold">‘e’</span> yang menjadi simbol dari
-        nama <span className="text-yellow-cs-30 font-extrabold">‘EVASTRA’</span>
+        Bentuk menyerupai huruf <span className="text-yellow-cs-30">‘e’</span> yang menjadi simbol dari nama{' '}
+        <span className="text-yellow-cs-30">‘EVASTRA’</span>
       </p>
     )
   },
@@ -87,11 +87,11 @@ const philosophyData = [
     image: LogoGradient,
     description: (
       <p>
-        Melambangkan <span className="text-yellow-cs-30 font-extrabold">keberagaman individu</span> yang{' '}
-        <span className="text-yellow-cs-30 font-extrabold">saling melengkapi</span> dalam satu{' '}
-        <span className="text-yellow-cs-30 font-extrabold">tujuan</span> bersama melalui proses perkembangan yang
-        berjalan secara <span className="text-yellow-cs-30 font-extrabold">bertahap</span>, dari mengenal diri, belajar
-        bersama, hingga mencapai <span className="text-yellow-cs-30 font-extrabold">potensi terbaik</span>
+        Melambangkan <span className="text-yellow-cs-30">keberagaman individu</span> yang{' '}
+        <span className="text-yellow-cs-30">saling melengkapi</span> dalam satu{' '}
+        <span className="text-yellow-cs-30">tujuan</span> bersama melalui proses perkembangan yang berjalan secara{' '}
+        <span className="text-yellow-cs-30">bertahap</span>, dari mengenal diri, belajar bersama, hingga mencapai{' '}
+        <span className="text-yellow-cs-30">potensi terbaik</span>
       </p>
     )
   }
@@ -110,7 +110,7 @@ const LogoPhilosophy = () => {
   return (
     <section
       id="logo-philosophy"
-      className="bg-blue-cs-40 text-neutral-cs-10 font-rubik relative flex w-full flex-col items-center justify-center px-4 py-16 text-center sm:px-10 lg:px-[90px]"
+      className="text-neutral-cs-10 font-rubik relative flex w-full flex-col items-center justify-center px-4 py-16 text-center sm:px-10 lg:px-[90px]"
     >
       {/* JUDUL */}
       <h2 className="text-neutral-cs-00 font-rubikone mb-10 text-[28px] tracking-wide sm:text-[38px] md:text-[48px]">

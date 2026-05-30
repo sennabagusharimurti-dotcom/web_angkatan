@@ -92,7 +92,7 @@ const Moments = () => {
           Our Moments
         </h2>
 
-        <div className="block px-4 py-8 lg:hidden">
+        <div className="block w-full px-4 py-8 lg:hidden">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {momentPhotos.map((photo) => (
               <button
