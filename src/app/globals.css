@@ -43,6 +43,12 @@ body {
   color: var(--foreground);
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 .scroll-reveal {
   --scroll-reveal-duration: 700ms;
   --scroll-reveal-delay: 0ms;

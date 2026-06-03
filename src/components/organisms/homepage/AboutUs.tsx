@@ -8,7 +8,7 @@ import cloudIcon from '@/assets/images/icon/cloud-2.svg'
 
 const AboutUs = () => {
   return (
-    <section id="about-us" className="bg-blue-cs-40 text-neutral-cs-10 w-full">
+    <section id="about-us" className="bg-blue-cs-40 text-neutral-cs-10 w-full overflow-x-clip">
       <div className="mx-auto flex w-full max-w-[1260px] flex-col items-center gap-8 px-6 py-16 text-center sm:px-10 lg:px-[90px] lg:py-[110px]">
         <div className="relative flex min-h-[104px] w-full items-start justify-center overflow-hidden pt-2 sm:min-h-0 sm:items-center sm:overflow-visible sm:pt-0">
           <Image
