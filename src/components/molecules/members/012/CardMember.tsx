@@ -181,7 +181,7 @@ const CardMember = () => {
                       event.currentTarget.volume = 0.6
                     }}
                   >
-                    <source src="/api/members/012/xaleid-intro-video" type="video/mp4" />
+                    <source src="/assets/videos/members/012/xaleidintro.mp4" type="video/mp4" />
                   </video>
                   <button
                     type="button"

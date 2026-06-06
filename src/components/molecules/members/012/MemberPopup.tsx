@@ -62,7 +62,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
           preload="metadata"
           aria-hidden="true"
         >
-          <source src="/api/members/012/background-video" type="video/mp4" />
+          <source src="/assets/videos/members/012/background.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
 
