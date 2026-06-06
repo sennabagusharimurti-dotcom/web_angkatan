@@ -1,13 +1,11 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Image from 'next/image'
 
 import Instagram from '@/components/atoms/button/InstagramButtonLink'
 import LinkedInButtonLink from '@/components/atoms/button/LinkedInButtonLink'
-import SpotifyEmbed from '@/components/molecules/SpotifyEmbed'
-
 import BackgroundImage from './background.jpg'
 import FolderIcon from './logo_folder.png'
 import MusicIcon from './logo_musik.png'
@@ -19,6 +17,9 @@ type MemberPopupProps = {
 }
 
 const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
+  const [spotifyData, setSpotifyData] = useState<{ title?: string; author_name?: string; thumbnail_url?: string } | null>(null)
+  const spotifyUrl = 'https://open.spotify.com/track/41OCQS2Mul3MluLUUsfadr?si=c721971a8b304f3a'
+
   useEffect(() => {
     if (!isOpen) {
       return
@@ -38,6 +39,31 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [isOpen, onClose])
+
+  useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+
+    const fetchSpotifyOEmbed = async () => {
+      try {
+        const response = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(spotifyUrl)}`)
+        if (!response.ok) {
+          return
+        }
+        const data = await response.json()
+        setSpotifyData({
+          title: data.title,
+          author_name: data.author_name,
+          thumbnail_url: data.thumbnail_url,
+        })
+      } catch {
+        setSpotifyData(null)
+      }
+    }
+
+    fetchSpotifyOEmbed()
+  }, [isOpen, spotifyUrl])
 
   if (!isOpen) {
     return null
@@ -107,17 +133,47 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
 
         <div className="music-section mt-4">
           <img src={FolderIcon.src} alt="folder" className="section-icon music-icon" />
-          {/* UBAH LAGU FAVORIT KAMU */}
-          <p className="section-title">LAGU FAVORIT</p>
-          <p className="song-title">Anugerah Terindah Yang Pernah Kumiliki</p>
+          <div className="music-section-header">
+            <p className="section-title">LAGU FAVORIT</p>
+          </div>
+          <p className="song-title">{spotifyData?.title ?? 'Anugerah Terindah Yang Pernah Kumiliki'}</p>
 
           <div className="retro-player">
-            <div className="retro-player-display">
+            <div className="retro-player-top">
               <img src={MusicIcon.src} alt="music" className="player-icon" />
-              Now Playing
+              <span className="player-label">Now Playing</span>
             </div>
-            <div className="retro-player-inner">
-              <SpotifyEmbed spotifyUrl="https://open.spotify.com/track/41OCQS2Mul3MluLUUsfadr?si=c721971a8b304f3a" />
+
+            <div className="retro-player-body">
+              <div className="player-album-art">
+                {spotifyData?.thumbnail_url ? (
+                  <img src={spotifyData.thumbnail_url} alt="Album art" className="player-album-image" />
+                ) : (
+                  <div className="player-album-placeholder">ART</div>
+                )}
+              </div>
+              <div className="player-details">
+                <div className="player-track">{spotifyData?.title ?? 'Anugerah Terindah Yang Pernah Kumiliki'}</div>
+                <div className="player-artist">{spotifyData?.author_name ?? 'Sheila On 7'}</div>
+                <div className="player-controls">
+                  <button type="button">◄◄</button>
+                  <button type="button">▶︎</button>
+                  <button type="button">■</button>
+                  <button type="button">►►</button>
+                </div>
+                <div className="player-progress-bar">
+                  <div className="player-progress-filled" />
+                </div>
+                <div className="player-time">
+                  <span>0:03</span>
+                  <span>1:18:43</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="player-status-bar">
+              <span className="player-status-text">{spotifyData?.title ?? 'Anugerah Terindah Yang Pernah Kumiliki'}</span>
+              <span className="player-status-duration">1:18:43</span>
             </div>
           </div>
         </div>
@@ -259,20 +315,120 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
           padding: 0.15rem;
           border: 1px solid #999;
         }
-          position: absolute;
-          top: 0.75rem;
-          left: 0.75rem;
-          width: 2.25rem;
-          height: 2.25rem;
-          object-fit: contain;
-          background: rgba(255, 255, 255, 0.92);
-          padding: 0.15rem;
-          border: 1px solid #999;
-        }
 
         .music-icon {
           width: 2.5rem;
           height: 2.5rem;
+        }
+
+        .music-section-header {
+          margin-left: 3.4rem;
+          padding-top: 0.3rem;
+          padding-bottom: 0.55rem;
+          border-bottom: 1px solid #999;
+        }
+
+        .retro-player-top {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding-bottom: 0.75rem;
+          border-bottom: 1px solid #3a3a3a;
+        }
+
+        .player-label {
+          font-family: 'Pixelify Sans', sans-serif;
+          font-size: 0.9rem;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #daf36a;
+        }
+
+        .retro-player-body {
+          display: flex;
+          gap: 0.85rem;
+          padding-top: 0.8rem;
+          align-items: flex-start;
+        }
+
+        .player-album-art {
+          min-width: 6.5rem;
+          min-height: 6.5rem;
+          background: linear-gradient(180deg, #444 0%, #111 100%);
+          border: 2px inset #666;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        .player-album-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .player-album-placeholder {
+          color: #d8d8d8;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 0.85rem;
+          letter-spacing: 0.2rem;
+        }
+
+        .player-details {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 0.7rem;
+        }
+
+        .player-track {
+          font-family: 'Pixelify Sans', sans-serif;
+          font-size: 0.95rem;
+          color: #dfeeb3;
+          text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+        }
+
+        .player-artist {
+          font-family: 'Courier New', Courier, monospace;
+          color: #a8c38e;
+          font-size: 0.85rem;
+        }
+
+        .player-controls {
+          display: flex;
+          gap: 0.35rem;
+        }
+
+        .player-controls button {
+          width: 2.4rem;
+          height: 2.4rem;
+          border: 2px solid #8e8e8e;
+          background: #222;
+          color: #fafafa;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 0.85rem;
+          cursor: pointer;
+          box-shadow: inset 1px 1px 0 #ffffff50, inset -1px -1px 0 #00000040;
+        }
+
+        .player-progress-bar {
+          height: 0.6rem;
+          background: #2f2f2f;
+          border: 1px solid #4f4f4f;
+        }
+
+        .player-progress-filled {
+          width: 30%;
+          height: 100%;
+          background: linear-gradient(90deg, #65d967, #76f4bd);
+        }
+
+        .player-time {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.78rem;
+          color: #b8b8b8;
         }
 
         .player-icon {
@@ -318,7 +474,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
         .retro-player-display {
           display: inline-flex;
           align-items: center;
-          gap: 0.45rem;
+          gap: 0.55rem;
           margin-bottom: 0.5rem;
           font-family: 'Pixelify Sans', sans-serif;
           font-size: 0.82rem;
@@ -327,17 +483,28 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
           text-transform: uppercase;
         }
 
-        .retro-player-inner {
-          background: #1a1a1a;
-          border: inset 2px #7d7d7d;
-          padding: 0.65rem;
+        .player-status-bar {
+          display: flex;
+          justify-content: space-between;
+          padding: 0.55rem 0.6rem 0.55rem;
+          margin-top: 0.8rem;
+          background: #111;
+          border-top: 1px solid #3a3a3a;
+          color: #c9ff88;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 0.78rem;
+          letter-spacing: 0.06em;
         }
 
-        .retro-player-inner iframe {
-          width: 100%;
-          min-height: 150px;
-          border: none;
-          border-radius: 0;
+        .player-status-text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          max-width: 65%;
+        }
+
+        .player-status-duration {
+          opacity: 0.85;
         }
       `}</style>
     </>
