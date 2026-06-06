@@ -206,7 +206,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
                 ✕
               </button>
 
-              <div className="mb-6 overflow-hidden rounded-2xl border border-white/20 shadow-lg">
+              <div className="mb-6 overflow-hidden rounded-2xl border border-white/20 shadow-lg transition-all duration-300 hover:border-white/50 hover:shadow-[0_0_30px_10px_rgba(255,255,255,0.15)]">
                 <Image src={ProfileImage} alt="Profile Image" className="h-120 w-full object-cover object-center" />
               </div>
 
@@ -216,36 +216,36 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
               </div>
 
               <div className="mt-5 flex gap-3">
-                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-2 py-2 text-sm font-medium text-white/80 backdrop-blur-sm transition-colors transition-transform hover:scale-105 hover:bg-white/15">
+                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-2 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-white/15 transition-transform hover:scale-105 backdrop-blur-sm hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
                   <Instagram username="tobbyadiwijaya" />
                 </div>
-                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-2 py-2 text-sm font-medium text-white/80 backdrop-blur-sm transition-colors transition-transform hover:scale-105 hover:bg-white/15">
+                <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-2 py-2 text-sm font-medium text-white/80 transition-colors hover:bg-white/15 transition-transform hover:scale-105 backdrop-blur-sm hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
                   <LinkedInButtonLink username="tobby-adiwijaya" />
                 </div>
               </div>
 
               <div className="mt-8 grid gap-4 text-sm sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-colors hover:bg-white/10">
-                  <p className="mb-3 text-xs font-bold tracking-widest text-white/50 uppercase">Hobi</p>
-                  <ul className="space-y-2 font-medium text-white/80">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+                  <p className="text-xs font-bold tracking-widest text-white/50 uppercase mb-3">Hobi</p>
+                  <ul className="space-y-2 text-white/80 font-medium">
                     <li>• games (Battlefield, Counter-Strike)</li>
                     <li>• olahraga (running, cycling, hiking)</li>
                     <li>• music enthusiast</li>
                   </ul>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-colors hover:bg-white/10">
-                  <p className="mb-3 text-xs font-bold tracking-widest text-white/50 uppercase">Fun Fact</p>
-                  <p className="leading-relaxed font-medium text-white/80">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+                  <p className="text-xs font-bold tracking-widest text-white/50 uppercase mb-3">Fun Fact</p>
+                  <p className="text-white/80 font-medium leading-relaxed">
                     idk but i share the same birthday with elon musk (lol) (#BlessPeopleBornInJune)
                   </p>
                 </div>
               </div>
-
-              <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-colors hover:bg-white/10">
-                <p className="mb-3 text-xs font-bold tracking-widest text-white/50 uppercase">Lagu Favorit</p>
-                <p className="mb-4 text-base font-semibold text-white/90">love.</p>
-                <SpotifyEmbed spotifyUrl="https://open.spotify.com/track/5mtTAScDytxMMqZj14NmlN?si=655201ef718c486c" />
+                              
+              <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+                <p className="text-xs font-bold tracking-widest text-white/50 uppercase mb-3">Lagu Favorit</p>
+                <p className="mb-4 text-base font-semibold text-white/90">End of Beginning</p>
+                <SpotifyEmbed spotifyUrl="https://open.spotify.com/track/3qhlB30KknSejmIvZZLjOD?si=a084a797da404a92" />
               </div>
             </div>
           </div>
