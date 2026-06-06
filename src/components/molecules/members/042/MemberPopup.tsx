@@ -109,7 +109,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
           <p className="my-2 text-sm font-semibold text-[#E8F4FF]">Disillusioned</p>
 
           {/* UBAH URL SPOTIFY KAMU DENGAN LAGU FAVORIT MU */}
-          <SpotifyEmbed spotifyUrl="https://open.spotify.com/track/2X62SjtuwVQiGiZvZZ9Ztr?si=f6718391848a4469" />
+          <SpotifyEmbed spotifyUrl="https://open.spotify.com/track/1gUyF1kls2Q5MkuAi9djjx?si=ba0c1b7a9498419c" />
         </div>
       </div>
     </div>
