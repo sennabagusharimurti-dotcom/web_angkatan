@@ -1,9 +1,8 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
-
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { createPortal } from 'react-dom'
 
 import Instagram from '@/components/atoms/button/InstagramButtonLink'
 import LinkedInButtonLink from '@/components/atoms/button/LinkedInButtonLink'
@@ -19,17 +18,23 @@ type MemberPopupProps = {
 const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
   // State untuk mengontrol fase gacha: 'banner' -> 'animating' -> 'revealed'
   const [gachaPhase, setGachaPhase] = useState<'banner' | 'animating' | 'revealed'>('banner')
+  const revealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const closePopup = useCallback(() => {
+    if (revealTimerRef.current) {
+      clearTimeout(revealTimerRef.current)
+      revealTimerRef.current = null
+    }
+    setGachaPhase('banner')
+    onClose()
+  }, [onClose])
 
   useEffect(() => {
-    if (!isOpen) {
-      // Reset state ketika popup ditutup
-      setTimeout(() => setGachaPhase('banner'), 300) 
-      return
-    }
+    if (!isOpen) return
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose()
+        closePopup()
       }
     }
 
@@ -39,15 +44,20 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
     return () => {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', handleKeyDown)
+      if (revealTimerRef.current) {
+        clearTimeout(revealTimerRef.current)
+        revealTimerRef.current = null
+      }
     }
-  }, [isOpen, onClose])
+  }, [isOpen, closePopup])
 
   // Fungsi untuk menjalankan animasi gacha
   const handlePullGacha = () => {
     setGachaPhase('animating')
     // Animasi berjalan selama 2.5 detik sebelum memunculkan kartu
-    setTimeout(() => {
+    revealTimerRef.current = setTimeout(() => {
       setGachaPhase('revealed')
+      revealTimerRef.current = null
     }, 2500)
   }
 
@@ -55,8 +65,8 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
     return null
   }
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto px-4 pt-28 pb-8 sm:pt-32">
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-hidden px-4">
       {/* CSS Khusus untuk animasi meteor Gacha (Krem) & Glow */}
       <style>{`
         @keyframes gacha-meteor {
@@ -78,27 +88,24 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
       `}</style>
 
       {/* Backdrop */}
-  return createPortal(
-    // PADA BAGIAN INI KAMU BOLEH MENGUBAH STYLE SESUKA HATI KAMU, TAPI JANGAN UBAH STRUKTUR DAN FUNGSI DARI KODE INI AGAR FUNGSI POPUP TETAP BERJALAN DENGAN BAIK
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto px-4">
       <button
         type="button"
         aria-label="Close member detail"
-        onClick={onClose}
-        className="absolute inset-0 bg-black/80 backdrop-blur-md transition-all duration-500"
+        onClick={closePopup}
+        className="fixed inset-0 bg-black/80 backdrop-blur-md transition-all duration-500"
       />
 
       {/* FASE 1: BANNER SPECIAL SUMMON (KREM - UNKNOWN) */}
       {gachaPhase === 'banner' && (
-        <div className="relative z-10 w-full max-w-[800px] mt-[10vh] animate-pulse rounded-3xl border-4 border-[#E7DCCA]/80 bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] p-1 shadow-[0_0_60px_rgba(231,220,202,0.5)]">
+        <div className="relative z-10 h-[100dvh] max-h-[100dvh] w-full max-w-[800px] animate-pulse overflow-y-auto overscroll-contain rounded-3xl border-4 border-[#E7DCCA]/80 bg-gradient-to-b from-[#1a1a1a] to-[#0d0d0d] p-1 shadow-[0_0_60px_rgba(231,220,202,0.5)]">
           {/* Inner Container untuk border krem */}
-          <div className="relative rounded-2xl bg-gradient-to-br from-[#1a1a1a] via-[#101010] to-[#050505] p-8 text-white">
+          <div className="relative min-h-full rounded-2xl bg-gradient-to-br from-[#1a1a1a] via-[#101010] to-[#050505] p-8 text-white">
             
             {/* Tombol Cancel / Close di Banner */}
             <button
               type="button"
               aria-label="Cancel Summon"
-              onClick={onClose}
+              onClick={closePopup}
               className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#E7DCCA]/50 bg-[#1a1a1a]/80 text-xl font-bold text-[#E7DCCA] transition-all hover:bg-[#E7DCCA] hover:text-slate-900"
             >
               ✕
@@ -159,19 +166,6 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
                 CLICK TO REVEAL
               </p>
             </div>
-      <div className="border-neutral-cs-10 bg-blue-cs-40 relative z-10 max-h-[100dvh] w-full max-w-[720px] animate-[member-popup-show_200ms_ease-out] overflow-y-auto rounded-2xl border-2 p-6 text-white shadow-xl sm:p-8">
-        <button
-          type="button"
-          aria-label="Close member detail"
-          onClick={onClose}
-          className="border-neutral-cs-10 hover:bg-neutral-cs-10/10 absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full border text-xl leading-none"
-        >
-          x
-        </button>
-
-        <div className="border-neutral-cs-10/40 mb-5 overflow-hidden rounded-2xl border">
-          <Image src={ProfileImage} alt="Profile Image" className="h-120 w-full object-cover object-center" />
-        </div>
 
           </div>
         </div>
@@ -179,16 +173,16 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
 
       {/* FASE 2: ANIMASI BINTANG JATUH (METEOR - KREM) */}
       {gachaPhase === 'animating' && (
-        <div className="pointer-events-none relative z-10 flex h-[40vh] w-full items-center justify-center">
+        <div className="pointer-events-none relative z-10 flex h-[100dvh] w-full items-center justify-center">
           <div className="animate-meteor h-8 w-8 rounded-full bg-white shadow-[0_0_80px_40px_#E7DCCA,0_0_120px_60px_#FDF5E6]"></div>
         </div>
       )}
 
       {/* FASE 3: POPUP KARAKTER (THEMA GACHA/GENSHIN - KREM) */}
       {gachaPhase === 'revealed' && (
-        <div className="relative z-10 w-full max-w-[720px] max-h-[calc(100vh-9rem)] overflow-y-auto rounded-2xl animate-card p-1 sm:max-h-[calc(100vh-10rem)] bg-gradient-to-br from-[#E7DCCA] via-[#FDF5E6] to-[#E7DCCA] shadow-[0_0_50px_rgba(231,220,202,0.6)]">
+        <div className="relative z-10 h-[100dvh] max-h-[100dvh] w-full max-w-[720px] animate-card overflow-y-auto overscroll-contain rounded-2xl bg-gradient-to-br from-[#E7DCCA] via-[#FDF5E6] to-[#E7DCCA] p-1 shadow-[0_0_50px_rgba(231,220,202,0.6)]">
           {/* Inner Container untuk efek border krem */}
-          <div className="relative h-full w-full rounded-xl bg-gradient-to-b from-slate-900 via-[#0f172a] to-[#1e1b4b] p-6 text-white sm:p-8 overflow-hidden">
+          <div className="relative min-h-full w-full overflow-hidden rounded-xl bg-gradient-to-b from-slate-900 via-[#0f172a] to-[#1e1b4b] p-6 text-white sm:p-8">
             
             {/* Ornamen Gacha di pojok (Krem) */}
             <div className="pointer-events-none absolute left-0 top-0 h-24 w-24 border-l-4 border-t-4 border-[#E7DCCA]/50 rounded-tl-xl opacity-70"></div>
@@ -200,7 +194,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
             <button
               type="button"
               aria-label="Close member detail"
-              onClick={onClose}
+              onClick={closePopup}
               className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#E7DCCA]/50 bg-slate-900/80 text-xl font-bold text-[#E7DCCA] transition-all hover:bg-[#E7DCCA] hover:text-slate-900"
             >
               ✕
@@ -259,17 +253,6 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
           </div>
         </div>
       )}
-    </div>
-
-        <div className="border-neutral-cs-10/40 mt-4 rounded-xl border p-4">
-          {/* UBAH LAGU FAVORIT KAMU */}
-          <p className="text-neutral-cs-10/60 text-xs font-bold tracking-wide uppercase">Lagu Favorit</p>
-          <p className="my-2 text-sm font-semibold">There Is a Light That Never Goes Out</p>
-
-          {/* UBAH URL SPOTIFY KAMU DENGAN LAGU FAVORIT MU */}
-          <SpotifyEmbed spotifyUrl="https://open.spotify.com/track/2X62SjtuwVQiGiZvZZ9Ztr?si=f6718391848a4469" />
-        </div>
-      </div>
     </div>,
     document.body
   )
