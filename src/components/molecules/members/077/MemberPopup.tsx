@@ -43,8 +43,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
   }
 
   return createPortal(
-    // PADA BAGIAN INI KAMU BOLEH MENGUBAH STYLE SESUKA HATI KAMU, TAPI JANGAN UBAH STRUKTUR DAN FUNGSI DARI KODE INI AGAR FUNGSI POPUP TETAP BERJALAN DENGAN BAIK
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-[#05050e]/90 backdrop-blur-md">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-hidden bg-[#05050e]/90 px-4 backdrop-blur-md">
       
       {/* --- INJEKSI CUSTOM CSS UNTUK ANIMASI ABSTRAK --- */}
       <style
@@ -75,7 +74,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
       <button type="button" aria-label="Close modal" onClick={onClose} className="absolute inset-0 z-0 w-full h-full cursor-default" />
  
       {/* WRAPPER KARTU UTAMA */}
-      <div className="relative w-full max-w-[720px] max-h-[90vh] flex flex-col z-10 group animate-in fade-in zoom-in duration-300">
+      <div className="group animate-in fade-in zoom-in relative z-10 flex h-[100dvh] max-h-[100dvh] w-full max-w-[720px] flex-col duration-300">
         
         {/* Spinning Gradient Border */}
         <div className="absolute inset-0 rounded-[28px] overflow-hidden z-0 pointer-events-none shadow-[0_0_40px_rgba(168,85,247,0.15)]">
@@ -94,9 +93,14 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
  
         {/* FIX #1: Tambah min-h-0 — ini yang bikin scroll akhirnya jalan */}
         <div className="relative flex-1 min-h-0 m-[2px] rounded-[26px] glass-panel overflow-y-auto scrollbar-hide z-10 text-white">
-          
-          <div className="p-6 pt-12 sm:p-8 sm:pt-12 relative min-h-full">
-            
+ 
+          <div className="p-6 sm:p-8 relative min-h-full">
+ 
+            {/* HERO IMAGE — sama persis ukurannya kayak template (h-120, dalam padding card) */}
+            <div className="mb-5 overflow-hidden rounded-2xl border border-white/10">
+              <Image src={ProfileImage} alt="Profile Image" className="h-120 w-full object-cover object-center" />
+            </div>
+ 
             {/* ELEMEN ABSTRAK */}
             <svg className="absolute top-4 right-14 w-10 h-10 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] pointer-events-none z-0 opacity-40" style={{ animation: 'abstract-pulse-spin 6s ease-in-out infinite' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
@@ -114,20 +118,14 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
             <div className="absolute top-[25%] right-[20%] w-1 h-1 rounded-full bg-cyan-400 pointer-events-none" style={{ animation: 'twinkle 4s ease-in-out infinite 1s' }}></div>
             <div className="absolute bottom-[30%] left-[10%] w-1.5 h-1.5 rounded-full bg-purple-400 pointer-events-none" style={{ animation: 'twinkle 2.5s ease-in-out infinite 0.5s' }}></div>
  
-            {/* HEADER KONTEN */}
-            <div className="relative flex flex-col items-center sm:items-start gap-4 mb-6 z-10 text-center sm:text-left">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-[20px] bg-[#0d0d1f] border border-purple-500/30 flex items-center justify-center relative overflow-hidden group/avatar shadow-[0_0_20px_rgba(168,85,247,0.15)] shrink-0">
-                <Image src={ProfileImage} alt="Profile Image" className="absolute inset-0 w-full h-full object-cover group-hover/avatar:scale-110 transition-transform duration-500" />
-              </div>
- 
-              <div className="pb-1 w-full">
-                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300">
-                  Rifqi Dwi Muslim
-                </h2>
-                <p className="mt-2 text-sm sm:text-base font-semibold text-cyan-400/90 tracking-wide">
-                  5027251077 - Prabumulih
-                </p>
-              </div>
+            {/* HEADER KONTEN — nama & ID di bawah foto */}
+            <div className="relative flex flex-col items-center sm:items-start gap-1 mb-6 z-10 text-center sm:text-left pr-10">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300">
+                Rifqi Dwi Muslim
+              </h2>
+              <p className="mt-1 text-sm sm:text-base font-semibold text-cyan-400/90 tracking-wide">
+                5027251077 - Prabumulih
+              </p>
             </div>
  
             {/* SOCIAL MEDIA PILLS */}
@@ -145,7 +143,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
               <div className="glass-bento bg-rose-500/5 border border-rose-500/20 rounded-2xl p-5 relative overflow-hidden group/card">
                 <div className="absolute -right-6 -top-6 w-20 h-20 bg-rose-500/10 rounded-full blur-xl group-hover/card:bg-rose-500/20 transition-colors"></div>
                 <p className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-rose-400 mb-2">Hobi</p>
-                <p className="text-sm sm:text-base font-semibold text-white/90 leading-snug">Kadang membaca, nulis, desain </p>
+                <p className="text-sm sm:text-base font-semibold text-white/90 leading-snug">Kadang membaca, nulis, desain 🖍️</p>
               </div>
               
               <div className="glass-bento bg-purple-500/5 border border-purple-500/20 rounded-2xl p-5 relative overflow-hidden group/card">
