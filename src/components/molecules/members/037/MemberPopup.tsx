@@ -1,22 +1,21 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-<<<<<<< HEAD
-=======
-import { createPortal } from 'react-dom'
->>>>>>> 0ca2ee6a5c27422718182f876463e61126367821
+import React, { useCallback, useEffect, useState } from 'react'
 
 import Image from 'next/image'
 import { Cormorant_Garamond, Nunito } from 'next/font/google'
+
+import { createPortal } from 'react-dom'
 
 import Instagram from '@/components/atoms/button/InstagramButtonLink'
 import LinkedInButtonLink from '@/components/atoms/button/LinkedInButtonLink'
 import SpotifyEmbed from '@/components/molecules/SpotifyEmbed'
 
-import ProfileImage from './image.jpg'
 import BackgroundImage from './background.jpg'
-import SleepingCatGif from './sleeping_cat_zzz_clean.gif'
+import ProfileImage from './image.jpg'
 import IntroGif from './member-intro.gif'
+import SleepingCatGif from './sleeping_cat_zzz_clean.gif'
 
 type MemberPopupProps = {
   isOpen: boolean
@@ -25,16 +24,21 @@ type MemberPopupProps = {
 
 const titleFont = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['600', '700'],
+  weight: ['600', '700']
 })
 
 const bodyFont = Nunito({
   subsets: ['latin'],
-  weight: ['400', '600', '700', '800'],
+  weight: ['400', '600', '700', '800']
 })
 
 const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
   const [introPhase, setIntroPhase] = useState<'playing' | 'zooming' | 'done'>('playing')
+
+  const closePopup = useCallback(() => {
+    setIntroPhase('playing')
+    onClose()
+  }, [onClose])
 
   useEffect(() => {
     if (!isOpen) {
@@ -53,7 +57,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose()
+        closePopup()
       }
     }
 
@@ -66,7 +70,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isOpen, onClose])
+  }, [isOpen, closePopup])
 
   if (!isOpen) {
     return null
@@ -75,7 +79,6 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
   return (
     // PADA BAGIAN INI KAMU BOLEH MENGUBAH STYLE SESUKA HATI KAMU, TAPI JANGAN UBAH STRUKTUR DAN FUNGSI DARI KODE INI AGAR FUNGSI POPUP TETAP BERJALAN DENGAN BAIK
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden px-3 py-3 sm:px-4 sm:py-8 ${bodyFont.className}`}
       className={`fixed inset-0 z-[100] flex items-start justify-center overflow-hidden px-4 ${bodyFont.className}`}
     >
       <style jsx global>{`
@@ -85,13 +88,11 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
             transform: scale(1);
             filter: blur(0);
           }
-
           65% {
             opacity: 1;
             transform: scale(1.65);
             filter: blur(2px);
           }
-
           100% {
             opacity: 0;
             transform: scale(2.45);
@@ -105,7 +106,6 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
             transform: scale(0.76);
             filter: blur(16px);
           }
-
           100% {
             opacity: 1;
             transform: scale(1);
@@ -132,7 +132,6 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
             transform: translateY(0) scale(1) rotate(0deg);
             opacity: 0.72;
           }
-
           50% {
             transform: translateY(-12px) scale(1.15) rotate(8deg);
             opacity: 1;
@@ -211,25 +210,9 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
               backgroundImage: `linear-gradient(135deg, rgba(3, 7, 18, 0.76), rgba(15, 39, 72, 0.72), rgba(3, 7, 18, 0.86)), url(${BackgroundImage.src})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              backgroundSize: 'cover'
             }}
           />
-<<<<<<< HEAD
-=======
-      <div
-        className="relative z-10 h-[100dvh] max-h-[100dvh] w-full max-w-[720px] animate-[member-popup-show_200ms_ease-out] overflow-y-auto rounded-[28px] border-2 border-white/60 p-6 text-white shadow-[0_0_45px_rgba(96,165,250,0.45)] sm:p-8"
-        style={{
-          backgroundImage: `linear-gradient(rgba(9, 26, 52, 0.35), rgba(9, 26, 52, 0.5)), url(${BackgroundImage.src})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="pointer-events-none absolute left-5 top-8 text-white/90">
-          <div className="text-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">✧</div>
-          <div className="mt-2 text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">☆</div>
-          <div className="mt-3 text-xl drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">✦</div>
-          <div className="mt-2 text-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">☆</div>
-        </div>
->>>>>>> 0ca2ee6a5c27422718182f876463e61126367821
 
           <div className="pointer-events-none absolute left-[8%] top-[14%] z-10 text-4xl text-[#ffefb3] drop-shadow-[0_0_18px_rgba(255,239,179,0.95)] animate-[star-float_2700ms_ease-in-out_infinite] sm:left-[10%] sm:top-[16%] sm:text-5xl">
             ✦
@@ -247,22 +230,31 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
             ❀
           </div>
 
-<<<<<<< HEAD
           <div className="pointer-events-none absolute h-[280px] w-[280px] rounded-full bg-[#ffefb3]/20 blur-3xl animate-[intro-glow-pulse_2800ms_ease-in-out_infinite] sm:h-[420px] sm:w-[420px]" />
-=======
-          <div className="pointer-events-none absolute h-[280px] w-[280px] rounded-full bg-[#dbeafe]/20 blur-3xl animate-[intro-glow-pulse_2800ms_ease-in-out_infinite] sm:h-[420px] sm:w-[420px]" />
-        <button
-          type="button"
-          aria-label="Close member detail"
-          onClick={onClose}
-          className="absolute top-4 right-4 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-white/60 bg-white/10 text-2xl leading-none text-white shadow-[0_0_22px_rgba(255,255,255,0.45)] backdrop-blur-md transition hover:bg-white/20 hover:shadow-[0_0_30px_rgba(255,255,255,0.7)]"
-        >
-          ×
-        </button>
->>>>>>> 0ca2ee6a5c27422718182f876463e61126367821
 
+          <div className="pointer-events-none absolute top-[14%] left-[8%] z-10 animate-[star-float_2700ms_ease-in-out_infinite] text-4xl text-[#fff7d6] drop-shadow-[0_0_20px_rgba(255,247,214,0.95)] sm:text-5xl">
+            ✦
+          </div>
+          <div className="pointer-events-none absolute top-[18%] right-[8%] z-10 animate-[star-float_3300ms_ease-in-out_infinite] text-4xl text-[#dbeafe] drop-shadow-[0_0_22px_rgba(191,219,254,0.95)] sm:text-5xl">
+            ☆
+          </div>
+          <div className="pointer-events-none absolute bottom-[18%] left-[12%] z-10 animate-[star-float_3000ms_ease-in-out_infinite] text-3xl text-[#fff7d6] drop-shadow-[0_0_18px_rgba(255,247,214,0.9)] sm:text-4xl">
+            ✧
+          </div>
+          <div className="pointer-events-none absolute right-[14%] bottom-[16%] z-10 animate-[star-float_3600ms_ease-in-out_infinite] text-3xl text-[#dbeafe] drop-shadow-[0_0_18px_rgba(191,219,254,0.9)] sm:text-4xl">
+            ✩
+          </div>
+
+          <button
+            type="button"
+            aria-label="Close member detail"
+            onClick={closePopup}
+            className="absolute top-4 right-4 z-30 flex h-11 w-11 items-center justify-center rounded-full border border-white/60 bg-white/10 text-2xl leading-none text-white shadow-[0_0_22px_rgba(255,255,255,0.45)] backdrop-blur-md transition hover:bg-white/20"
+          >
+            ×
+          </button>
           <div
-            className={`relative z-20 flex w-full max-w-[92vw] items-center justify-center overflow-visible rounded-[24px] bg-transparent sm:max-w-[720px] sm:rounded-[32px] ${
+            className={`relative z-20 flex w-full max-w-[92vw] items-center justify-center sm:max-w-[720px] ${
               introPhase === 'zooming'
                 ? 'animate-[intro-gif-zoom_1000ms_cubic-bezier(0.16,1,0.3,1)_forwards]'
                 : ''
@@ -512,33 +504,9 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
               </div>
             </div>
           </div>
-<<<<<<< HEAD
         </>
       )}
     </div>
-=======
-        </div>
-      )}
-    </div>
-
-        <div className="mt-4 rounded-[22px] border border-white/45 bg-white/10 p-5 shadow-[0_0_28px_rgba(147,197,253,0.5)] backdrop-blur-md transition hover:bg-white/15 hover:shadow-[0_0_38px_rgba(191,219,254,0.7)]">
-          {/* UBAH LAGU FAVORIT KAMU */}
-          <p className="text-xs font-bold tracking-[0.28em] uppercase text-white/70">Lagu Favorit</p>
-          <p
-            className={`${titleFont.className} my-2 text-4xl font-bold leading-none tracking-wide text-[#f7edc8] drop-shadow-[0_0_10px_rgba(255,255,255,0.7)]`}
-          >
-            From The Start
-          </p>
-
-          <div className="rounded-[18px] border border-white/20 bg-[#0b2343]/60 p-3 shadow-[inset_0_0_20px_rgba(255,255,255,0.06)]">
-            {/* UBAH URL SPOTIFY KAMU DENGAN LAGU FAVORIT MU */}
-            <SpotifyEmbed spotifyUrl="https://open.spotify.com/track/43iIQbw5hx986dUEZbr3eN?si=95173f1123ab4b7a" />
-          </div>
-        </div>
-      </div>
-    </div>,
-    document.body
->>>>>>> 0ca2ee6a5c27422718182f876463e61126367821
   )
 }
 
