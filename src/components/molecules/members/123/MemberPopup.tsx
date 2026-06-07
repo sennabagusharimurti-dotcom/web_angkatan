@@ -4,6 +4,8 @@ import React, { useEffect } from 'react'
 
 import Image from 'next/image'
 
+import { createPortal } from 'react-dom'
+
 import Instagram from '@/components/atoms/button/InstagramButtonLink'
 import LinkedInButtonLink from '@/components/atoms/button/LinkedInButtonLink'
 import SpotifyEmbed from '@/components/molecules/SpotifyEmbed'
@@ -40,9 +42,9 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
     return null
   }
 
-  return (
+  return createPortal(
     // PADA BAGIAN INI KAMU BOLEH MENGUBAH STYLE SESUKA HATI KAMU, TAPI JANGAN UBAH STRUKTUR DAN FUNGSI DARI KODE INI AGAR FUNGSI POPUP TETAP BERJALAN DENGAN BAIK
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto px-4 pt-28 pb-8 sm:pt-32">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-hidden px-4">
       <button
         type="button"
         aria-label="Close member detail"
@@ -50,7 +52,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
       />
 
-      <div className="border-pink-600 bg-pink-200 relative z-10 max-h-[calc(100vh-9rem)] w-full max-w-[720px] animate-[member-popup-show_200ms_ease-out] overflow-y-auto rounded-2xl border-2 p-6 text-white shadow-xl sm:max-h-[calc(100vh-10rem)] sm:p-8">
+      <div className="border-pink-600 bg-pink-200 relative z-10 max-h-screen w-full max-w-[720px] animate-[member-popup-show_200ms_ease-out] overflow-y-auto rounded-2xl border-2 p-6 text-white shadow-xl sm:p-8">
         {/* TABURAN BUNGA AURA */}
 <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
   <span className="absolute top-6 left-12 text-md opacity-80">🌸</span>
@@ -108,7 +110,8 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
           <SpotifyEmbed spotifyUrl="https://open.spotify.com/intl-id/track/214nt20w5wOxJnY462klLw" />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 
