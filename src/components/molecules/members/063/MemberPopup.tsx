@@ -416,9 +416,6 @@ const FogCursorTrail = memo(({ enabled }: { enabled: boolean }) => {
     if (typeof window === 'undefined') return
     if (typeof document === 'undefined') return
 
-    if (window.matchMedia('(pointer: coarse)').matches) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
     const styleId = 'fog-cursor-style'
     const layerId = 'fog-cursor-layer'
 
@@ -427,71 +424,64 @@ const FogCursorTrail = memo(({ enabled }: { enabled: boolean }) => {
     if (!styleTag) {
       styleTag = document.createElement('style')
       styleTag.id = styleId
-      styleTag.textContent = `
-        #${layerId} {
-          position: fixed;
-          inset: 0;
-          z-index: 2147483647;
-          pointer-events: none;
-          overflow: hidden;
-        }
+      document.head.appendChild(styleTag)
+    }
 
-        .fog-cursor-puff {
-          position: fixed;
-          left: 0;
-          top: 0;
-          width: var(--fog-size);
-          height: var(--fog-size);
-          border-radius: 9999px;
-          pointer-events: none;
-          background:
-            radial-gradient(
-              circle,
-              rgba(216, 199, 163, 0.52) 0%,
-              rgba(180, 180, 180, 0.34) 34%,
-              rgba(78, 107, 90, 0.18) 58%,
-              transparent 78%
-            );
-          filter: blur(8px);
+    styleTag.textContent = `
+      .fog-cursor-puff {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: var(--fog-size);
+        height: var(--fog-size);
+        border-radius: 9999px;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            circle,
+            rgba(216, 199, 163, 0.38) 0%,
+            rgba(180, 180, 180, 0.22) 32%,
+            rgba(78, 107, 90, 0.12) 56%,
+            transparent 78%
+          );
+        mix-blend-mode: screen;
+        opacity: 0;
+        filter: blur(8px);
+        transform:
+          translate3d(var(--fog-x), var(--fog-y), 0)
+          translate(-50%, -50%)
+          scale(0.4);
+        animation: fog-cursor-dissolve 1000ms ease-out forwards;
+        will-change: transform, opacity, filter;
+      }
+
+      @keyframes fog-cursor-dissolve {
+        0% {
           opacity: 0;
           transform:
             translate3d(var(--fog-x), var(--fog-y), 0)
             translate(-50%, -50%)
-            scale(0.45);
-          animation: fog-cursor-dissolve 900ms ease-out forwards;
-          will-change: transform, opacity, filter;
+            scale(0.35);
+          filter: blur(4px);
         }
 
-        @keyframes fog-cursor-dissolve {
-          0% {
-            opacity: 0;
-            transform:
-              translate3d(var(--fog-x), var(--fog-y), 0)
-              translate(-50%, -50%)
-              scale(0.35);
-            filter: blur(4px);
-          }
-
-          20% {
-            opacity: 0.85;
-          }
-
-          100% {
-            opacity: 0;
-            transform:
-              translate3d(var(--fog-x), var(--fog-y), 0)
-              translate(
-                calc(-50% + var(--fog-dx)),
-                calc(-50% + var(--fog-dy))
-              )
-              scale(2.7);
-            filter: blur(16px);
-          }
+        18% {
+          opacity: 0.45;
         }
-      `
 
-      document.head.appendChild(styleTag)
-    }
+        100% {
+          opacity: 0;
+          transform:
+            translate3d(var(--fog-x), var(--fog-y), 0)
+            translate(
+              calc(-50% + var(--fog-dx)),
+              calc(-50% + var(--fog-dy))
+            )
+            scale(2.9);
+          filter: blur(18px);
+        }
+      }
+    `
 
     const oldLayer = document.getElementById(layerId)
     oldLayer?.remove()
@@ -499,27 +489,32 @@ const FogCursorTrail = memo(({ enabled }: { enabled: boolean }) => {
     const layer = document.createElement('div')
     layer.id = layerId
     layer.setAttribute('aria-hidden', 'true')
+
+    Object.assign(layer.style, {
+      position: 'fixed',
+      inset: '0',
+      zIndex: '2147483647',
+      pointerEvents: 'none',
+      overflow: 'hidden',
+      width: '100vw',
+      height: '100dvh',
+    })
+
     document.body.appendChild(layer)
 
     let lastSpawnTime = 0
 
-    const spawnFog = (event: MouseEvent) => {
-      const now = performance.now()
-
-      if (now - lastSpawnTime < 80) return
-
-      lastSpawnTime = now
-
+    const spawnFogAt = (x: number, y: number) => {
       const puff = document.createElement('span')
 
-      const size = 26 + Math.random() * 36
-      const driftX = (Math.random() * 2 - 1) * 28
-      const driftY = -16 - Math.random() * 24
+      const size = 38 + Math.random() * 48
+      const driftX = (Math.random() * 2 - 1) * 38
+      const driftY = -20 - Math.random() * 32
 
       puff.className = 'fog-cursor-puff'
       puff.style.setProperty('--fog-size', `${size}px`)
-      puff.style.setProperty('--fog-x', `${event.clientX}px`)
-      puff.style.setProperty('--fog-y', `${event.clientY}px`)
+      puff.style.setProperty('--fog-x', `${x}px`)
+      puff.style.setProperty('--fog-y', `${y}px`)
       puff.style.setProperty('--fog-dx', `${driftX}px`)
       puff.style.setProperty('--fog-dy', `${driftY}px`)
 
@@ -534,10 +529,19 @@ const FogCursorTrail = memo(({ enabled }: { enabled: boolean }) => {
       )
     }
 
-    document.addEventListener('mousemove', spawnFog, { passive: true })
+    const spawnFog = (event: MouseEvent) => {
+      const now = performance.now()
+
+      if (now - lastSpawnTime < 120) return
+
+      lastSpawnTime = now
+      spawnFogAt(event.clientX, event.clientY)
+    }
+
+    window.addEventListener('mousemove', spawnFog, { passive: true })
 
     return () => {
-      document.removeEventListener('mousemove', spawnFog)
+      window.removeEventListener('mousemove', spawnFog)
       layer.remove()
     }
   }, [enabled])
@@ -578,51 +582,106 @@ ChantLineText.displayName = 'ChantLineText'
 // PHASE COMPONENTS
 // ============================================================================
 
-const IntroPhase = memo(({ onNext }: { onNext: () => void }) => (
-  <div className="relative z-10 flex min-h-[620px] items-center justify-center overflow-hidden p-6 text-center sm:p-8">
-    <div
-      className="absolute inset-0 bg-cover opacity-[0.5] grayscale-[24%] sepia-[16%] saturate-[0.82]"
-      style={{
-        backgroundImage: `url(${CastleImage.src})`,
-        backgroundPosition: '56% center',
-      }}
-    />
+const IntroPhase = memo(({ onNext }: { onNext: () => void }) => {
+  const [praiseText, setPraiseText] = useState('')
+  const [hasError, setHasError] = useState(false)
 
-    <div className="absolute inset-0 bg-[#070A0F]/46" />
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(7,10,15,0.04)_0%,rgba(7,10,15,0.2)_42%,rgba(7,10,15,0.9)_100%)]" />
-    <div className="absolute left-[-18%] top-[18%] h-44 w-[140%] bg-gradient-to-r from-transparent via-[rgba(180,180,180,0.2)] to-transparent blur-3xl animate-[mist-drift_8s_ease-in-out_infinite_alternate]" />
-    <div className="absolute bottom-[4%] right-[-20%] h-56 w-[125%] bg-gradient-to-r from-transparent via-[#4E6B5A]/20 to-transparent blur-3xl animate-[mist-drift_11s_ease-in-out_infinite_alternate]" />
+  const requiredPhrase = 'praise the fool'
 
-    <CosmicParticles />
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
 
-    <div className="relative z-10 max-w-[560px]">
-      <p className="font-ancient-label mb-5 text-[10px] tracking-[0.34em] text-[#B08D57]">
-        SEALED INQUIRY
-      </p>
+    const normalizedInput = praiseText.trim().toLowerCase()
 
-      <h2 className="font-ancient-title text-3xl leading-tight text-[#E5E7EB] drop-shadow-[0_0_18px_rgba(0,0,0,0.6)] sm:text-5xl">
-        Do you believe in The Fool who rules above the gray fog?
-      </h2>
+    if (normalizedInput !== requiredPhrase) {
+      setHasError(true)
+      return
+    }
 
-      <div className="mx-auto my-7 h-px w-44 bg-gradient-to-r from-transparent via-[#B08D57]/85 to-transparent" />
+    setHasError(false)
+    onNext()
+  }
 
-      <button
-        type="button"
-        onClick={onNext}
-        className="font-ancient-label group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-[#B08D57]/45 bg-[#070A0F]/70 px-8 py-3 text-[11px] tracking-[0.28em] text-[#D8C7A3] shadow-[0_0_18px_rgba(176,141,87,0.14)] transition duration-300 hover:border-[#D8C7A3]/70 hover:bg-[#B08D57]/10 hover:text-[#E5E7EB]"
-      >
-        <span className="relative z-10">PRAISE THE FOOL</span>
-        <span className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[#D8C7A3]/60 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
-        <span className="pointer-events-none absolute inset-x-4 bottom-0 h-px bg-gradient-to-r from-transparent via-[#D8C7A3]/60 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
-      </button>
+  return (
+    <div className="relative z-10 flex h-[100dvh] min-h-[620px] items-center justify-center overflow-hidden p-6 text-center sm:p-8">
+      <div
+        className="absolute inset-0 bg-cover opacity-[0.5] grayscale-[24%] sepia-[16%] saturate-[0.82]"
+        style={{
+          backgroundImage: `url(${CastleImage.src})`,
+          backgroundPosition: '56% center',
+        }}
+      />
+
+      <div className="absolute inset-0 bg-[#070A0F]/46" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(7,10,15,0.04)_0%,rgba(7,10,15,0.2)_42%,rgba(7,10,15,0.9)_100%)]" />
+      <div className="absolute left-[-18%] top-[18%] h-44 w-[140%] bg-gradient-to-r from-transparent via-[rgba(180,180,180,0.2)] to-transparent blur-3xl animate-[mist-drift_8s_ease-in-out_infinite_alternate]" />
+      <div className="absolute bottom-[4%] right-[-20%] h-56 w-[125%] bg-gradient-to-r from-transparent via-[#4E6B5A]/20 to-transparent blur-3xl animate-[mist-drift_11s_ease-in-out_infinite_alternate]" />
+
+      <CosmicParticles />
+
+      <div className="relative z-10 max-w-[620px]">
+        <p className="font-ancient-label mb-5 text-[10px] tracking-[0.34em] text-[#B08D57]">
+          SEALED INQUIRY
+        </p>
+
+        <h2 className="font-ancient-title text-3xl leading-tight text-[#E5E7EB] drop-shadow-[0_0_18px_rgba(0,0,0,0.6)] sm:text-5xl">
+          Do you believe in The Fool who rules above the gray fog?
+        </h2>
+
+        <div className="mx-auto my-7 h-px w-44 bg-gradient-to-r from-transparent via-[#B08D57]/85 to-transparent" />
+
+        <form onSubmit={handleSubmit} className="mx-auto flex max-w-[430px] flex-col items-center gap-3">
+          <label
+            htmlFor="fool-praise-input"
+            className="font-ritual-chant text-sm tracking-[0.16em] text-[#D8C7A3]/85"
+          >
+            Type the sacred phrase
+          </label>
+
+          <input
+            id="fool-praise-input"
+            type="text"
+            value={praiseText}
+            onChange={(event) => {
+              setPraiseText(event.target.value)
+              setHasError(false)
+            }}
+            placeholder="Praise the Fool"
+            autoComplete="off"
+            spellCheck={false}
+            className={`font-ritual-chant w-full rounded-full border bg-[#070A0F]/72 px-5 py-3 text-center text-base tracking-[0.08em] text-[#E5E7EB] outline-none backdrop-blur-md transition duration-300 placeholder:text-[#9CA3AF]/55 ${
+              hasError
+                ? 'border-[#6F1D1B]/80 shadow-[0_0_18px_rgba(111,29,27,0.34)]'
+                : 'border-[#B08D57]/45 shadow-[0_0_18px_rgba(176,141,87,0.14)] focus:border-[#D8C7A3]/80 focus:shadow-[0_0_24px_rgba(176,141,87,0.24)]'
+            }`}
+          />
+
+          {hasError && (
+            <p className="font-victorian-body text-sm italic text-[#D8C7A3]/80">
+              The gray fog remains silent.
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="font-ancient-label group relative mt-2 inline-flex items-center justify-center overflow-hidden rounded-full border border-[#B08D57]/45 bg-[#070A0F]/70 px-8 py-3 text-[11px] tracking-[0.28em] text-[#D8C7A3] shadow-[0_0_18px_rgba(176,141,87,0.14)] transition duration-300 hover:border-[#D8C7A3]/70 hover:bg-[#B08D57]/10 hover:text-[#E5E7EB]"
+          >
+            <span className="relative z-10">CONFIRM</span>
+            <span className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[#D8C7A3]/60 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+            <span className="pointer-events-none absolute inset-x-4 bottom-0 h-px bg-gradient-to-r from-transparent via-[#D8C7A3]/60 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
-))
+  )
+})
+
+IntroPhase.displayName = 'IntroPhase'
 
 IntroPhase.displayName = 'IntroPhase'
 
 const ChantPhase = memo(() => (
-  <div className="relative z-10 flex min-h-[620px] items-center justify-center overflow-hidden p-6 text-center sm:p-8">
+  <div className="relative z-10 flex h-[100dvh] min-h-[620px] items-center justify-center overflow-hidden p-6 text-center sm:p-8">
     <div className="absolute inset-0 bg-[#070A0F]" />
 
     <CastleBackground animated />
@@ -664,7 +723,7 @@ const ChantPhase = memo(() => (
 ChantPhase.displayName = 'ChantPhase'
 
 const PreGifPhase = memo(() => (
-  <div className="relative z-10 min-h-[620px] overflow-hidden">
+  <div className="relative z-10 h-[100dvh] min-h-[620px] overflow-hidden">
     <div className="absolute inset-0 animate-[pre-gif-blur_800ms_ease-out_forwards]">
       <div className="absolute inset-0 bg-[#070A0F]" />
 
@@ -688,7 +747,7 @@ const PreGifPhase = memo(() => (
 PreGifPhase.displayName = 'PreGifPhase'
 
 const GifPhase = memo(() => (
-  <div className="relative z-10 h-[min(620px,100dvh)] min-h-[620px] overflow-hidden bg-[#070A0F]">
+  <div className="relative z-10 h-[100dvh] min-h-[620px] overflow-hidden bg-[#070A0F]">
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(176,141,87,0.12),transparent_36%),linear-gradient(180deg,rgba(7,10,15,1),rgba(11,15,23,1))]" />
 
     <img
@@ -707,7 +766,7 @@ const GifPhase = memo(() => (
 GifPhase.displayName = 'GifPhase'
 
 const LogoPhase = memo(() => (
-  <div className="relative z-10 flex min-h-[620px] items-center justify-center overflow-hidden bg-[#070A0F] p-6">
+  <div className="relative z-10 flex h-[100dvh] min-h-[620px] items-center justify-center overflow-hidden bg-[#070A0F] p-6">
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(176,141,87,0.12),transparent_28%),radial-gradient(circle_at_70%_72%,rgba(78,107,90,0.16),transparent_36%),radial-gradient(circle_at_center,rgba(180,180,180,0.1),transparent_44%),linear-gradient(180deg,rgba(7,10,15,1),rgba(11,15,23,1))]" />
 
     <CosmicParticles />
@@ -1057,45 +1116,54 @@ const handlePhaseChange = useCallback(() => {
 
   setPhase('chant')
 }, [clearAudioFadeTimer])
+  const isCinematicPhase = phase !== 'profile'
 
   if (!isOpen || !mounted) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto px-4 py-6">
+    <div
+      className={`${cinzelDecorative.variable} ${imFellEnglish.variable} ${cormorantGaramond.variable} fixed inset-0 z-[100] overflow-hidden text-[#E5E7EB]`}
+    >
       <style>{POPUP_STYLES}</style>
+
       <FogCursorTrail enabled={isOpen && mounted && phase === 'profile'} />
+
+      <button
+        type="button"
+        aria-label="Close member detail backdrop"
+        onClick={handleClose}
+        className="fixed inset-0 z-0 bg-[#070A0F]/88 backdrop-blur-sm"
+      />
 
       <button
         type="button"
         aria-label="Close member detail"
         onClick={handleClose}
-        className="absolute inset-0 bg-[#070A0F]/82 backdrop-blur-sm"
-      />
-
-      <div
-        className={`${cinzelDecorative.variable} ${imFellEnglish.variable} ${cormorantGaramond.variable} member-popup-card relative z-10 max-h-[100dvh] w-full max-w-[720px] animate-[card-enter_450ms_ease-out_forwards] overflow-y-auto rounded-2xl border border-[#5F7EB2]/24 bg-[#050914] text-[#E5E7EB] shadow-[0_0_54px_rgba(18,42,86,0.26)]`}
+        className="fixed right-4 top-4 z-[120] flex h-10 w-10 items-center justify-center rounded-full border border-[#B08D57]/50 bg-[#070A0F]/80 text-xl leading-none text-[#D8C7A3] shadow-[0_0_18px_rgba(176,141,87,0.14)] transition hover:bg-[#6F1D1B]/45 hover:text-[#E5E7EB]"
       >
-        <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_top,rgba(176,141,87,0.14),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(78,107,90,0.14),transparent_34%),linear-gradient(145deg,rgba(17,24,39,0.98),rgba(7,10,15,0.98))]" />
-        <div className="pointer-events-none absolute inset-4 z-[3] rounded-xl border border-[#6C88BC]/10" />
+        X
+      </button>
 
-        <OccultCorners />
+      {isCinematicPhase ? (
+        <div className="fixed inset-0 z-10 overflow-hidden bg-[#070A0F] animate-[card-enter_450ms_ease-out_forwards]">
+          {phase === 'intro' && <IntroPhase onNext={handlePhaseChange} />}
+          {phase === 'chant' && <ChantPhase />}
+          {phase === 'preGif' && <PreGifPhase />}
+          {phase === 'gif' && <GifPhase />}
+          {phase === 'logo' && <LogoPhase />}
+        </div>
+      ) : (
+        <div className="pointer-events-none fixed inset-0 z-10 flex items-center justify-center overflow-y-auto px-4 py-6">
+          <div className="member-popup-card pointer-events-auto relative z-10 max-h-[100dvh] w-full max-w-[720px] animate-[card-enter_450ms_ease-out_forwards] overflow-y-auto rounded-2xl border border-[#5F7EB2]/24 bg-[#050914] text-[#E5E7EB] shadow-[0_0_54px_rgba(18,42,86,0.26)]">
+            <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_top,rgba(176,141,87,0.14),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(78,107,90,0.14),transparent_34%),linear-gradient(145deg,rgba(17,24,39,0.98),rgba(7,10,15,0.98))]" />
+            <div className="pointer-events-none absolute inset-4 z-[3] rounded-xl border border-[#6C88BC]/10" />
 
-        <button
-          type="button"
-          aria-label="Close member detail"
-          onClick={handleClose}
-          className="absolute right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full border border-[#B08D57]/50 bg-[#070A0F]/80 text-xl leading-none text-[#D8C7A3] shadow-[0_0_18px_rgba(176,141,87,0.14)] transition hover:bg-[#6F1D1B]/45 hover:text-[#E5E7EB]"
-        >
-          X
-        </button>
+            <OccultCorners />
 
-        {phase === 'intro' && <IntroPhase onNext={handlePhaseChange} />}
-        {phase === 'chant' && <ChantPhase />}
-        {phase === 'preGif' && <PreGifPhase />}
-        {phase === 'gif' && <GifPhase />}
-        {phase === 'logo' && <LogoPhase />}
-        {phase === 'profile' && <ProfilePhase />}
-      </div>
+            <ProfilePhase />
+          </div>
+        </div>
+      )}
     </div>,
     document.body
   )
