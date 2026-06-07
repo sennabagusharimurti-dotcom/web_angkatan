@@ -9,6 +9,7 @@ import LinkedInButtonLink from '@/components/atoms/button/LinkedInButtonLink'
 import SpotifyEmbed from '@/components/molecules/SpotifyEmbed'
 
 import ProfileImage from './image.png'
+import EvaBackground from './eva-background.jpg'
 import EvaCover from './eva-cover.png'
 
 type MemberPopupProps = {
@@ -62,8 +63,8 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
     'CHECKING AUTHORIZATION...',
     'SYNCHRONIZING PILOT DATA...',
     'VERIFYING NERV DATABASE...',
-    'PILOT VERIFIED',
-    'ACCESS GRANTED',
+    'PILOT IDENTITY CONFIRMED',
+    'NERV AUTHORIZATION ACCEPTED',
   ]
 
   setTerminalText('')
@@ -88,8 +89,42 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
 
   if (!accessGranted) {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 px-4">
-      <div className="w-full max-w-xl rounded-2xl border-2 border-red-600 bg-black p-8 text-white shadow-2xl">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+      <div className="absolute inset-0 z-0" 
+      style={{ 
+        backgroundImage: `url(${EvaBackground.src})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
+        backgroundRepeat: 'no-repeat',}}/>
+      {/*overlay*/}
+      <div className="absolute inset-0 z-0 bg-black/85" />
+      {/* Scanline Effect */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-10"
+        style={{
+          background:
+            'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.8) 3px, rgba(0,0,0,0.8) 4px)',
+        }}
+      />
+      <div
+        className="absolute inset-0 z-0 opacity-20"
+        style={{
+          backgroundImage:
+            'linear-gradient(red 1px, transparent 1px), linear-gradient(90deg, red 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+      {/* CLASSIFIED */}
+      <div className="absolute top-6 left-6 z-10 text-red-600">
+        <p className="text-xs tracking-[0.5em]">
+          NERV DATABASE
+        </p>
+
+        <p className="text-3xl font-black">
+          CLASSIFIED
+        </p>
+      </div>
+      <div className="relative z-20 w-full max-w-xl rounded-2xl border-2 border-red-600 bg-black p-8 text-white shadow-2xl">
         <div className="mb-6">
           <p className="text-xs tracking-[0.5em] text-red-500">
             NERV SECURITY SYSTEM
@@ -148,30 +183,46 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
 
   return (
     // PADA BAGIAN INI KAMU BOLEH MENGUBAH STYLE SESUKA HATI KAMU, TAPI JANGAN UBAH STRUKTUR DAN FUNGSI DARI KODE INI AGAR FUNGSI POPUP TETAP BERJALAN DENGAN BAIK
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto px-4 pt-28 pb-8 sm:pt-32">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto p-4"
+      onClick={onClose}>
+      {/* Full Screen EVA Overlay */}
+      <div className="fixed inset-0 z-[9999] bg-black" />
+      {/* EVA Background */}
+      <div
+        className="fixed inset-0 z-[10000]"
+        style={{
+          backgroundImage: `url(${EvaBackground.src})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+
+      {/* Overlay */}
+      <div className="fixed inset-0 z-[10001] bg-black/85" />
       <button
         type="button"
         aria-label="Close member detail"
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/90 z-[9999]"
       />
 
-      <div className=" relative z-10 max-h-[calc(100vh-9rem)] w-full max-w-[720px] overflow-y-auto rounded-2xl border-2 border-red-600 text-white shadow-xl sm:max-h-[calc(100vh-10rem)]
+      <div className=" relative z-[10002] max-h-[calc(100vh-9rem)] w-full max-w-[720px] overflow-y-auto rounded-2xl border-2 border-red-600 text-white shadow-xl sm:max-h-[calc(100vh-10rem)]
           "style={{
             backgroundColor: '#0a0a0a',
             boxShadow:
             'inset 8px 0 0 #ff0000, inset -8px 0 0 #ff0000',
           }}
         >
-
+        {/*
         <div className="absolute top-0 left-0 h-1 w-full bg-red-600" />
-        <div className="absolute bottom-0 left-0 h-1 w-full bg-red-600" />
+        <div className="absolute bottom-0 left-0 h-1 w-full bg-red-600" />  */}
 
         {/* Dark Overlay */}
         <div className="absolute inset-0 rounded-2xl bg-black/60" />
 
         {/* Content */}
-        <div className="relative z-10 p-6 sm:p-8">
+        <div className="relative z-[101] p-6 sm:p-8">
           <button
             type="button"
             aria-label="Close member detail"
@@ -213,7 +264,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
           </div>
 
           <div className="mb-3 text-xs font-bold tracking-[0.3em] text-red-500">
-            NERV PERSONNEL DATA
+            NERV PERSONNEL FILE
           </div>
 
           <div className="pr-10">
@@ -253,7 +304,7 @@ const MemberPopup = ({ isOpen, onClose }: MemberPopupProps) => {
                 Fun Fact
               </p>
               <p className="mt-2">
-                Gwe pilot EVA!!!!
+                Candidate for EVA Unit-01 synchronization test.
               </p>
             </div>
           </div>
